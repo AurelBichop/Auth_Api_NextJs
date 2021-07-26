@@ -1,16 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../components/layout";
 import style from "../styles/login.module.css"
 import useAuth from "../auth/context";
+import { useRouter } from "next/router";
+import { redirectFromServer } from "../auth/cookies";
 
 const Login = () => {
     const { login, isAuthenticated } = useAuth();
 
-    console.log(isAuthenticated)
+    const router = useRouter();
     const [values, setValues] = useState({
         username: "",
         password: ""
     });
+
+    useEffect(() => {
+        if (isAuthenticated) router.push("/")
+    }, [isAuthenticated])
 
     const handleChange = name => event => {
         setValues({ ...values, [name]: event.target.value })
@@ -37,6 +43,14 @@ const Login = () => {
             </div>
         </Layout>
     )
+}
+
+export const getServerSideProps = async(context) => {
+    redirectFromServer(context)
+
+    return {
+        props: {}
+    }
 }
 
 export default Login;

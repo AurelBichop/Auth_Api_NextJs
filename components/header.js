@@ -1,8 +1,13 @@
 import React from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import useAuth from "../auth/context";
 
 export const Header = () => {
+    const { isAuthenticated, user, logout } = useAuth();
+
+    console.log(user)
+
     const router = useRouter();
     const styles = {
         main: {
@@ -26,12 +31,37 @@ export const Header = () => {
             <Link href="/profile" passHref>
                 <span style={router.pathname === "/profile" ? styles.active : styles.link}>Profile</span>
             </Link>
-            <Link href="/dashboard" passHref>
-                <span style={router.pathname === "/dashboard" ? styles.active : styles.link}>Dashboard</span>
-            </Link>
-            <Link href="/login" passHref>
-                <span style={router.pathname === "/login" ? styles.active : styles.link}>Login</span>
-            </Link>
+            {
+                isAuthenticated && user.role === "admin" && (
+                    <Link href="/dashboard" passHref>
+                        <span style={router.pathname === "/dashboard" ? styles.active : styles.link}>
+                            Dashboard
+                        </span>
+                    </Link>
+                )
+            }
+            {
+                isAuthenticated && (
+                    <>
+                        <span style={styles.link}>
+                            Bonjour {user.username}
+                        </span>
+                        <button style={styles.link} onClick={logout}>
+                            Deconnexion
+                        </button>
+                    </>
+                )
+            }
+            {
+                !isAuthenticated && (
+                    <>
+                        <Link href="/login" passHref>
+                            <span style={router.pathname === "/login" ? styles.active : styles.link}>Login</span>
+                        </Link>
+                    </>
+                )
+            }
+
         </div>
     )
 }

@@ -1,5 +1,6 @@
 import React from "react";
 import Layout from "../components/layout";
+import { AdminRoute } from "../auth/adminRoutes";
 
 const Dashboard = () => {
     return (
@@ -9,4 +10,4 @@ const Dashboard = () => {
     )
 }
 
-export default Dashboard;
+export default AdminRoute(Dashboard);

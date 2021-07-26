@@ -1,5 +1,7 @@
 import React from "react";
 import Layout from "../components/layout";
+import { ProtectedRoute } from "../auth/protectedRoutes";
+
 
 const Profile = () => {
     return (
@@ -9,4 +11,4 @@ const Profile = () => {
     )
 }
 
-export default Profile;
+export default ProtectedRoute(Profile);

@@ -34,3 +34,13 @@ export const getCookieFromServer = (key, req) => {
 
     return rawCookie.split("=")[1];
 }
+
+export const redirectFromServer = (context) => {
+    if (context.req.headers.cookie) {
+        const token = getCookieFromServer("token", context.req)
+        if (token) {
+            context.res.statusCode = 302;
+            context.res.setHeader("Location", "/")
+        }
+    }
+}
